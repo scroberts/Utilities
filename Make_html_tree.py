@@ -18,7 +18,7 @@ s = DCC.login(Site = 'Production')
 # froot = 'C. Enclosure Preliminary Design Phase'
 # coll = 'Collection-2219'
 
-coll = 'Collection-5311'
+coll = 'Collection-10598'
 froot = coll
 
 tr = Tree.return_tree(s, coll, froot)
