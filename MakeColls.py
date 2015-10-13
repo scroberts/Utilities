@@ -125,6 +125,7 @@ def reviewColls():
         print("Please enter the name of this new collection:")
         name = raw_input()
         print("Are you sure that you want to create: Collection-" + parent + ". Named: " + name)
+        print("Valid Inputs are as follows: Yes, Y")
         ans = raw_input().lower()
         if(ans in yes):
             print("You are now making Collection-" + parent + ". Named: " + name)
