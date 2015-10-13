@@ -81,17 +81,17 @@ def createReviewColls(s,handleParent, collNames, revName):
             createReviewColls(s, handleChild, subColl, revName)
 
 def reviewColls():
-    parent = 'Collection-10045'
-    m1cs_cid = 'Collection-11162'
-    m1cs_cid_name = 'M1CS CID'
-    str_cid_coll = 'Collection-10669'
-    str_cid_name = 'STR CID'
-    iris_lpdr = 'Collection-11161'
-    iris_lpdr_name = 'IRIS LPDR'
+    #parent = 'Collection-10045'
+    #m1cs_cid = 'Collection-11162'
+    #m1cs_cid_name = 'M1CS CID'
+    #str_cid_coll = 'Collection-10669'
+    #str_cid_name = 'STR CID'
+    #iris_lpdr = 'Collection-11161'
+    #iris_lpdr_name = 'IRIS LPDR'
     
-    parent = iris_lpdr
+    #parent = iris_lpdr
     set = top_level
-    name = iris_lpdr_name
+    #name = iris_lpdr_name
     #creates sets that define the user choice to cover miscellaneous cases
     prod = Set(['prod', 'production', 'p', ' '])
     test = Set(['test', 'tes', 't'])
@@ -102,7 +102,7 @@ def reviewColls():
     choice = raw_input().lower()
     #while loop to continue asking the user for input until a correct input has been entered
     while (checker == False):
-            #Production site login choice
+        #Production site login choice
         if(choice in prod):
             print("You are now logging into actual Production DocuShare")
             s = DCC.login(Site ='Production')
@@ -112,7 +112,7 @@ def reviewColls():
             print("You are now logging into the test VM DocuShare")
             s = DCC.login(site ='Test')
             checker = True
-            #cf.dcc_url + cf.dcc_login, 
+            #cf.dcc_url + cf.dcc_login 
         #error message alerting user to enter a valid choice
         else:
             print("Please enter a valid choice, (P)roduction or (T)est")
