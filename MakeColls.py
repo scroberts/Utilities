@@ -3,6 +3,7 @@
 # my modules
 import Config as cf
 import DCC
+from sets import Set
 
 data_package = [['DP01.1 (__NAME). Level 2 Requirements',[]],
     ['DP01.2 (__NAME). Level 3 Requirements',[]],
@@ -80,38 +81,58 @@ def createReviewColls(s,handleParent, collNames, revName):
             createReviewColls(s, handleChild, subColl, revName)
 
 def reviewColls():
-    parent = 'Collection-10045'
-    m1cs_cid = 'Collection-11162'
-    m1cs_cid_name = 'M1CS CID'
-    str_cid_coll = 'Collection-10669'
-    str_cid_name = 'STR CID'
-    iris_lpdr = 'Collection-11161'
-    iris_lpdr_name = 'IRIS LPDR'
+    #parent = 'Collection-10045'
+    #m1cs_cid = 'Collection-11162'
+    #m1cs_cid_name = 'M1CS CID'
+    #str_cid_coll = 'Collection-10669'
+    #str_cid_name = 'STR CID'
+    #iris_lpdr = 'Collection-11161'
+    #iris_lpdr_name = 'IRIS LPDR'
     
-    parent = iris_lpdr
+    #parent = iris_lpdr
     set = top_level
-    name = iris_lpdr_name
+    #name = iris_lpdr_name
     #creates sets that define the user choice to cover miscellaneous cases
-    prod = set(['prod', 'production', 'p', ' '])
-    test = set(['test', 'tes', 't'])
+    prod = Set(['prod', 'production', 'p', ' '])
+    test = Set(['test', 'tes', 't'])
+    check = Set([prod, test])
+    checker = False
     print("Would you like to log into the production site or the test site?")
+    print("Valid Inputs are as follows: Production, prod, p, test, t")
     choice = raw_input().lower()
     #while loop to continue asking the user for input until a correct input has been entered
-    while(choice not in (prod, test))
+    while (checker == False):
         #Production site login choice
         if(choice in prod):
             print("You are now logging into actual Production DocuShare")
             s = DCC.login(Site ='Production')
+            checker == True
         #test site login choice
         elif(choice in test):
             print("You are now logging into the test VM DocuShare")
             s = DCC.login(site ='Test')
-            #cf.dcc_url + cf.dcc_login, 
+            checker = True
+            #cf.dcc_url + cf.dcc_login 
         #error message alerting user to enter a valid choice
-        else
+        else:
             print("Please enter a valid choice, (P)roduction or (T)est")
-    
-    createReviewColls(s, parent, set, name)
+    checker = False
+    yes = Set(['yes', 'y', 'ye'])
+    while(checker == False):
+        print("Please enter a collection number that you would like to create")
+        col = raw_input()
+        parent = 'Collection-' + col
+        print("Please enter the name of this new collection:")
+        name = raw_input()
+        print("Are you sure that you want to create: Collection-" + parent + ". Named: " + name)
+        print("Valid Inputs are as follows: Yes, Y")
+        ans = raw_input().lower()
+        if(ans in yes):
+            print("You are now making Collection-" + parent + ". Named: " + name)
+            checker == True
+            #createReviewColls(s, parent, set, name)
+        else:
+            print("Please re-enter the Collection number and Collection name")
     
 if __name__ == '__main__':
     print("Running module test code for",__file__)
