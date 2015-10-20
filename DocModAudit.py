@@ -29,6 +29,8 @@ if os.path.isfile(CF.tracetreefilepath + CF.docmod_dict_file):
 if found_flag == False or MyUtil.get_yn('Create New DocMod File (Y/N)? : '):
     print('Creating DocMod file: ', CF.docmod_dict_file)
     DocMod.create_docmod_file(CF.docmod_dict_file)
+
+flag_update = MyUtil.get_yn('Do to want to be offered to make changes (Y/N)? ')
     
 # Open the document module
 fh = open(CF.tracetreefilepath + CF.docmod_dict_file,'r')
@@ -124,11 +126,16 @@ for dcc_doc in pub_list:
             print('*** [', dcc_doc, '] is recorded as published in Document Module')
             if not 'TMTPublished' in fd['keywords']:
                 print('*** WARNING: Document in Published Collection, but TMTPublished keyword is not set')
+                print('Checking flag_update = ',flag_update)
+                if flag_update and MyUtil.get_yn('Change DCC Keyword to add TMTPublished (Y/N)? '):
+                    DCC.set_metadata(s,fd['handle'],Keywords = fd['keywords'] + ' TMTPublished')                
             docmod_title = docmatch[dcc_doc].get('dccDocTitle', 'No Attribute Value Assigned')
             if not fd['title'] == docmod_title:
                 print('*** WARNING: Titles do not match')
                 print('\tDCC Title: ', fd['title'])
                 print('\tDocMod Title: ', docmod_title)
+                if flag_update and MyUtil.get_yn('Change DCC Title to Match DocMod (Y/N)? '):
+                    DCC.set_metadata(s,fd['handle'],Title = docmod_title)
             docmod_ver = DCC.get_handle(docmatch[dcc_doc]['dccDocVersionHyperlink'])
             if not fd['versions']['prefver'] == docmod_ver:
                 print('*** WARNING: Preferred Versions do not match')
