@@ -90,10 +90,11 @@ for ref in reflist.items():
 
             SET_TMTPUBLISHED = {
                     'ObjSel'    : { 'Criteria' : PD.docORcol},
-                    'ObjAct'    : [ PD.add_published_keyword,
+                    'ObjAct'    : [ if_not_in_pub_coll,
+                                    if_in_pub_coll,
                                     PD.chk_published_keyword,
-                                    if_not_in_pub_coll,
-                                    if_in_pub_coll],
+                                    PD.add_published_keyword
+                                    ],
                     'PermAct'   : [{'Criteria' : {}, 'Action' : {}}]} 
             
             PERM.check_perms(s, SET_TMTPUBLISHED, [handle], Ask = True)            
