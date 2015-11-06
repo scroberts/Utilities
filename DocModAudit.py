@@ -146,11 +146,12 @@ for dcc_doc in pub_list:
             if not docmod_no in fd['tmtnum']:
                 print('*** WARNING: TMT Document Numbers do not match')
                 print('\tDCC Document Number (with revision): ', fd['tmtnum'])
-                print('\tDocMod Document Number (without revision): ', docmod_no)            
-            if not docmatch[dcc_doc]['dccDocRev'] in fd['tmtnum']:
+                print('\tDocMod Document Number (without revision): ', docmod_no) 
+            docmod_rev = docmatch[dcc_doc].get('dccDocRev', 'No Attribute Value Assigned')           
+            if not docmod_rev in fd['tmtnum']:
                 print('*** WARNING: TMT Document Revisions do not match')
                 print('\tDCC Document Number: ', fd['tmtnum'])
-                print('\tDocMod Revision Number: ', docmatch[dcc_doc]['dccDocRev'])     
+                print('\tDocMod Revision Number: ', docmod_rev)     
         else:   
             DCC.print_doc_basic(fd)
             print('\n\t DCC View URL: ',Tree.url_view(fd['handle']),'\n')
