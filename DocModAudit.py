@@ -93,7 +93,7 @@ for ref in reflist.items():
                     'ObjAct'    : [ if_not_in_pub_coll,
                                     if_in_pub_coll,
                                     PD.chk_published_keyword,
-                                    PD.add_published_keyword
+                                    PD.chk_published_keyword_false
                                     ],
                     'PermAct'   : [{'Criteria' : {}, 'Action' : {}}]} 
             
@@ -127,7 +127,7 @@ for dcc_doc in pub_list:
             print('*** [', dcc_doc, '] is recorded as published in Document Module')
             if not 'TMTPublished' in fd['keywords']:
                 print('*** WARNING: Document in Published Collection, but TMTPublished keyword is not set')
-                print('Checking flag_update = ',flag_update)
+#                 print('Checking flag_update = ',flag_update)
                 if flag_update and MyUtil.get_yn('Change DCC Keyword to add TMTPublished (Y/N)? '):
                     DCC.set_metadata(s,fd['handle'],Keywords = fd['keywords'] + ' TMTPublished')                
             docmod_title = docmatch[dcc_doc].get('dccDocTitle', 'No Attribute Value Assigned')
@@ -142,10 +142,11 @@ for dcc_doc in pub_list:
                 print('*** WARNING: Preferred Versions do not match')
                 print('\tDCC Version Handle: ', fd['versions']['prefver'])
                 print('\tDocMod Version Handle: ', docmod_ver)
-            if not docmatch[dcc_doc]['dccDocNo'] in fd['tmtnum']:
+            docmod_no = docmatch[dcc_doc].get('dccDocNo', 'No Attribute Value Assigned')
+            if not docmod_no in fd['tmtnum']:
                 print('*** WARNING: TMT Document Numbers do not match')
                 print('\tDCC Document Number (with revision): ', fd['tmtnum'])
-                print('\tDocMod Document Number (without revision): ', docmatch[dcc_doc]['dccDocNo'])            
+                print('\tDocMod Document Number (without revision): ', docmod_no)            
             if not docmatch[dcc_doc]['dccDocRev'] in fd['tmtnum']:
                 print('*** WARNING: TMT Document Revisions do not match')
                 print('\tDCC Document Number: ', fd['tmtnum'])
