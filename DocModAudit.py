@@ -47,6 +47,7 @@ reflist['ICD'] = docinfo
 # construct document module report list
 docmodreport = []
 docmodreport.append('dccDocTitle')
+docmodreport.append('dccShortTitle')
 docmodreport.append('dccDocNo')
 docmodreport.append('dccDocRev')
 docmodreport.append('DocType')
@@ -129,25 +130,35 @@ for dcc_doc in pub_list:
                 print('*** WARNING: Document in Published Collection, but TMTPublished keyword is not set')
 #                 print('Checking flag_update = ',flag_update)
                 if flag_update and MyUtil.get_yn('Change DCC Keyword to add TMTPublished (Y/N)? '):
-                    DCC.set_metadata(s,fd['handle'],Keywords = fd['keywords'] + ' TMTPublished')                
+                    DCC.set_metadata(s,fd['handle'],Keywords = fd['keywords'] + ' TMTPublished')
+                                    
             docmod_title = docmatch[dcc_doc].get('dccDocTitle', 'No Attribute Value Assigned')
+            docmod_short = docmatch[dcc_doc].get('dccShortTitle', 'No Attribute Value Assigned')
+            docmod_no = docmatch[dcc_doc].get('dccDocNo', 'No Attribute Value Assigned')
+            docmod_rev = docmatch[dcc_doc].get('dccDocRev', 'No Attribute Value Assigned') 
+            docmod_ver = DCC.get_handle(docmatch[dcc_doc]['dccDocVersionHyperlink'])
+            
+            # if ICD then combing docmod title and short title
+            if '.ICD.' in docmod_no:
+                docmod_title = docmod_short.strip() + ' ' + docmod_title.strip()
+            
             if not fd['title'] == docmod_title:
                 print('*** WARNING: Titles do not match')
                 print('\tDCC Title: ', fd['title'])
                 print('\tDocMod Title: ', docmod_title)
                 if flag_update and MyUtil.get_yn('Change DCC Title to Match DocMod (Y/N)? '):
                     DCC.set_metadata(s,fd['handle'],Title = docmod_title)
-            docmod_ver = DCC.get_handle(docmatch[dcc_doc]['dccDocVersionHyperlink'])
+                    
             if not fd['versions']['prefver'] == docmod_ver:
                 print('*** WARNING: Preferred Versions do not match')
                 print('\tDCC Version Handle: ', fd['versions']['prefver'])
                 print('\tDocMod Version Handle: ', docmod_ver)
-            docmod_no = docmatch[dcc_doc].get('dccDocNo', 'No Attribute Value Assigned')
+
             if not docmod_no in fd['tmtnum']:
                 print('*** WARNING: TMT Document Numbers do not match')
                 print('\tDCC Document Number (with revision): ', fd['tmtnum'])
                 print('\tDocMod Document Number (without revision): ', docmod_no) 
-            docmod_rev = docmatch[dcc_doc].get('dccDocRev', 'No Attribute Value Assigned')           
+          
             if not docmod_rev in fd['tmtnum']:
                 print('*** WARNING: TMT Document Revisions do not match')
                 print('\tDCC Document Number: ', fd['tmtnum'])
