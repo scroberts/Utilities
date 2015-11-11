@@ -51,6 +51,7 @@ docmodreport.append('dccShortTitle')
 docmodreport.append('dccDocNo')
 docmodreport.append('dccDocRev')
 docmodreport.append('DocType')
+docmodreport.append('CADDocumentNo')
 docmodreport.append('dccDocHandleHyperlink')
 docmodreport.append('dccDocVersionHyperlink')
 docmodreport.append('dccDocSignedApproved')
@@ -102,16 +103,6 @@ for ref in reflist.items():
             docmodlist.append('Document-' + doc[1]['dccDocHandleNo'])
             
 
-docmodreport = []
-docmodreport.append('dccDocTitle')
-docmodreport.append('dccDocNo')
-docmodreport.append('dccDocRev')
-docmodreport.append('dccDocVersionHyperlink')
-docmodreport.append('dccDocSignedApproved')
-docmodreport.append('TMTPublished')
-docmodreport.append('dccStatusCheckDate')
-docmodreport.append('dccDocHandleNo')
-
 print('\n\n*********** Audit of documents in Published Collection ****************')
 for dcc_doc in pub_list:
     if 'Document-' in dcc_doc:
@@ -136,6 +127,7 @@ for dcc_doc in pub_list:
             docmod_short = docmatch[dcc_doc].get('dccShortTitle', 'No Attribute Value Assigned')
             docmod_no = docmatch[dcc_doc].get('dccDocNo', 'No Attribute Value Assigned')
             docmod_rev = docmatch[dcc_doc].get('dccDocRev', 'No Attribute Value Assigned') 
+            docmod_cadno = docmatch[dcc_doc].get('CADDocumentNo', '')
             docmod_ver = DCC.get_handle(docmatch[dcc_doc]['dccDocVersionHyperlink'])
             
             # if ICD then combing docmod title and short title
@@ -163,6 +155,15 @@ for dcc_doc in pub_list:
                 print('*** WARNING: TMT Document Revisions do not match')
                 print('\tDCC Document Number: ', fd['tmtnum'])
                 print('\tDocMod Revision Number: ', docmod_rev)     
+                
+            docmod_docnum = docmod_no + '.' + docmod_rev
+            if docmod_cadno:
+                docmod_docnum = docmod_docnum + '  [PDM CAD #:' + docmod_cadno + ']'
+            if not docmod_docnum in fd['tmtnum']:
+                question = 'Update TMT Document Number to: ' + docmod_docnum + ' (Y/N)? '
+                if flag_update and MyUtil.get_yn(question):
+                    DCC.set_metadata(s,fd['handle'], Summary = docmod_docnum)            
+            
         else:   
             DCC.print_doc_basic(fd)
             print('\n\t DCC View URL: ',Tree.url_view(fd['handle']),'\n')
