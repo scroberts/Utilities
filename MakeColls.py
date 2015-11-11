@@ -118,8 +118,7 @@ def reviewColls():
     while(checker1 == False):
         col = input()
         parent = 'Collection-' + col
-        x = DCC.propget(s, col , 'CollData')
-        #print (x)
+        fd = DCC.prop_get(s, parent , InfoSet = 'CollData', Print = True)
         print("Please enter the name of this new collection:")
         name = input()
         # double checks user to make sure that they would like to create this collection
@@ -131,7 +130,7 @@ def reviewColls():
         if(ans in yes):
             print("You are now making a collection named: " + name + " under " + parent )
             checker1 = True
-            #createReviewColls(s, parent, set, name)
+            createReviewColls(s, parent, set, name)
         else:
             print("Please re-enter a Collection number and Collection name")
             
