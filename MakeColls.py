@@ -91,7 +91,7 @@ def reviewColls():
     tes = ['test', 'tes', 't']
     checker = False
     print("Would you like to log into the production site or the test site?")
-    print("Valid Inputs are as follows: Production, prod, p, test, t")
+    print("Valid Inputs are as follows: Production, prod, p, test, t :", end="")
     choice = input().lower()
     #while loop to continue asking the user for input until a correct input has been entered
     while (checker == False):
@@ -103,7 +103,7 @@ def reviewColls():
         #test site login choice
         elif(choice in tes):
             print("You are now logging into the test VM DocuShare")
-            s = DCC.login(site ='Test')
+            s = DCC.login(Site ='Test')
             checker = True
             #cf.dcc_url + cf.dcc_login 
         #error message alerting user to enter a valid choice
@@ -113,25 +113,26 @@ def reviewColls():
     yes = ['yes', 'y', 'ye']
     #creates a new boolean variable to allow user to break from loop
     checker1 = False
-    print("Please enter a collection number that you would like to create")
+    print("Please enter a collection number that you would like to create a sub-collection under")
     #checker1 only true when uaer enters correct information 
     while(checker1 == False):
         col = input()
         parent = 'Collection-' + col
+        fd = DCC.prop_get(s, parent , InfoSet = 'CollData', Print = True)
         print("Please enter the name of this new collection:")
         name = input()
         # double checks user to make sure that they would like to create this collection
-        print("Are you sure that you want to create: Collection-" + parent + ". Named: " + name)
+        print("Are you sure that you want to create: " + name + " under " + parent)
         print("Valid Inputs are as follows: Yes, Y, No, N")
         ans = input().lower()
         # checks that user input is correct, if the answer is a valid form of yes
         # then the collection will be made and the user will break from the loop
         if(ans in yes):
-            print("You are now making " + parent + ". Named: " + name)
+            print("You are now making a collection named: " + name + " under " + parent )
             checker1 = True
-            #createReviewColls(s, parent, set, name)
+            createReviewColls(s, parent, set, name)
         else:
-            print("Please re-enter the Collection number and Collection name")
+            print("Please re-enter a Collection number and Collection name")
             
     
 if __name__ == '__main__':
