@@ -42,6 +42,7 @@ reflist = {}
 
 docinfo = {}
 docinfo['TMTPublished'] = 'True'
+docinfo['dccDocStatus'] = 'LATEST'
 reflist['ICD'] = docinfo
 
 # construct document module report list
@@ -56,6 +57,7 @@ docmodreport.append('dccDocHandleHyperlink')
 docmodreport.append('dccDocVersionHyperlink')
 docmodreport.append('dccDocSignedApproved')
 docmodreport.append('TMTPublished')
+docmodreport.append('dccDocStatus')
 docmodreport.append('dccStatusCheckDate')
 docmodreport.append('dccDocHandleNo')
 
@@ -132,7 +134,7 @@ for dcc_doc in pub_list:
             
             # if ICD then combing docmod title and short title
             if '.ICD.' in docmod_no:
-                docmod_title = docmod_short.strip() + ' ' + docmod_title.strip()
+                docmod_title = docmod_short.strip() + ' ---- ' + docmod_title.strip()
             
             if not fd['title'] == docmod_title:
                 print('*** WARNING: Titles do not match')
