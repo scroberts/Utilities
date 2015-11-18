@@ -114,7 +114,7 @@ def reviewColls():
     #creates a new boolean variable to allow user to break from loop
     checker1 = False
     print("Please enter a collection number that you would like to create a sub-collection under")
-    #checker1 only true when uaer enters correct information 
+    #checker1 only true when user enters correct information 
     while(checker1 == False):
         col = input()
         parent = 'Collection-' + col
