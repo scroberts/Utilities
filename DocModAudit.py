@@ -126,6 +126,7 @@ for dcc_doc in pub_list:
                     DCC.set_metadata(s,fd['handle'],Keywords = fd['keywords'] + ' TMTPublished')
                                     
             docmod_title = docmatch[dcc_doc].get('dccDocTitle', 'No Attribute Value Assigned')
+            docmod_type = docmatch[dcc_doc].get('DocType', 'No Attribute Value Assigned')
             docmod_short = docmatch[dcc_doc].get('dccShortTitle', 'No Attribute Value Assigned')
             docmod_no = docmatch[dcc_doc].get('dccDocNo', 'No Attribute Value Assigned')
             docmod_rev = docmatch[dcc_doc].get('dccDocRev', 'No Attribute Value Assigned') 
@@ -133,7 +134,7 @@ for dcc_doc in pub_list:
             docmod_ver = DCC.get_handle(docmatch[dcc_doc]['dccDocVersionHyperlink'])
             
             # if ICD then combing docmod title and short title
-            if '.ICD.' in docmod_no:
+            if '.ICD.' in docmod_no and not 'Drawing' in docmod_type:
                 docmod_title = docmod_short.strip() + ' ---- ' + docmod_title.strip()
             
             if not fd['title'] == docmod_title:
