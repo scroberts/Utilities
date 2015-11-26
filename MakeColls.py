@@ -132,7 +132,7 @@ def reviewColls():
             checker1 = True
             createReviewColls(s, parent, set, name)
         else:
-            print("Please re-enter a Collection number and Collection name")
+            print("Please re-enter a Collection number followed by a Collection name")
             
     
 if __name__ == '__main__':
