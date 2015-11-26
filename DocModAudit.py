@@ -42,18 +42,22 @@ reflist = {}
 
 docinfo = {}
 docinfo['TMTPublished'] = 'True'
+docinfo['dccDocStatus'] = 'LATEST'
 reflist['ICD'] = docinfo
 
 # construct document module report list
 docmodreport = []
 docmodreport.append('dccDocTitle')
+docmodreport.append('dccShortTitle')
 docmodreport.append('dccDocNo')
 docmodreport.append('dccDocRev')
 docmodreport.append('DocType')
+docmodreport.append('CADDocumentNo')
 docmodreport.append('dccDocHandleHyperlink')
 docmodreport.append('dccDocVersionHyperlink')
 docmodreport.append('dccDocSignedApproved')
 docmodreport.append('TMTPublished')
+docmodreport.append('dccDocStatus')
 docmodreport.append('dccStatusCheckDate')
 docmodreport.append('dccDocHandleNo')
 
@@ -90,25 +94,16 @@ for ref in reflist.items():
 
             SET_TMTPUBLISHED = {
                     'ObjSel'    : { 'Criteria' : PD.docORcol},
-                    'ObjAct'    : [ PD.add_published_keyword,
+                    'ObjAct'    : [ if_not_in_pub_coll,
+                                    if_in_pub_coll,
                                     PD.chk_published_keyword,
-                                    if_not_in_pub_coll,
-                                    if_in_pub_coll],
+                                    PD.chk_published_keyword_false
+                                    ],
                     'PermAct'   : [{'Criteria' : {}, 'Action' : {}}]} 
             
             PERM.check_perms(s, SET_TMTPUBLISHED, [handle], Ask = True)            
             docmodlist.append('Document-' + doc[1]['dccDocHandleNo'])
             
-
-docmodreport = []
-docmodreport.append('dccDocTitle')
-docmodreport.append('dccDocNo')
-docmodreport.append('dccDocRev')
-docmodreport.append('dccDocVersionHyperlink')
-docmodreport.append('dccDocSignedApproved')
-docmodreport.append('TMTPublished')
-docmodreport.append('dccStatusCheckDate')
-docmodreport.append('dccDocHandleNo')
 
 print('\n\n*********** Audit of documents in Published Collection ****************')
 for dcc_doc in pub_list:
@@ -126,29 +121,52 @@ for dcc_doc in pub_list:
             print('*** [', dcc_doc, '] is recorded as published in Document Module')
             if not 'TMTPublished' in fd['keywords']:
                 print('*** WARNING: Document in Published Collection, but TMTPublished keyword is not set')
-                print('Checking flag_update = ',flag_update)
+#                 print('Checking flag_update = ',flag_update)
                 if flag_update and MyUtil.get_yn('Change DCC Keyword to add TMTPublished (Y/N)? '):
-                    DCC.set_metadata(s,fd['handle'],Keywords = fd['keywords'] + ' TMTPublished')                
+                    DCC.set_metadata(s,fd['handle'],Keywords = fd['keywords'] + ' TMTPublished')
+                                    
             docmod_title = docmatch[dcc_doc].get('dccDocTitle', 'No Attribute Value Assigned')
+            docmod_type = docmatch[dcc_doc].get('DocType', 'No Attribute Value Assigned')
+            docmod_short = docmatch[dcc_doc].get('dccShortTitle', 'No Attribute Value Assigned')
+            docmod_no = docmatch[dcc_doc].get('dccDocNo', 'No Attribute Value Assigned')
+            docmod_rev = docmatch[dcc_doc].get('dccDocRev', 'No Attribute Value Assigned') 
+            docmod_cadno = docmatch[dcc_doc].get('CADDocumentNo', '')
+            docmod_ver = DCC.get_handle(docmatch[dcc_doc]['dccDocVersionHyperlink'])
+            
+            # if ICD then combing docmod title and short title
+            if '.ICD.' in docmod_no and not 'Drawing' in docmod_type:
+                docmod_title = docmod_short.strip() + ' ---- ' + docmod_title.strip()
+            
             if not fd['title'] == docmod_title:
                 print('*** WARNING: Titles do not match')
                 print('\tDCC Title: ', fd['title'])
                 print('\tDocMod Title: ', docmod_title)
                 if flag_update and MyUtil.get_yn('Change DCC Title to Match DocMod (Y/N)? '):
                     DCC.set_metadata(s,fd['handle'],Title = docmod_title)
-            docmod_ver = DCC.get_handle(docmatch[dcc_doc]['dccDocVersionHyperlink'])
+                    
             if not fd['versions']['prefver'] == docmod_ver:
                 print('*** WARNING: Preferred Versions do not match')
                 print('\tDCC Version Handle: ', fd['versions']['prefver'])
                 print('\tDocMod Version Handle: ', docmod_ver)
-            if not docmatch[dcc_doc]['dccDocNo'] in fd['tmtnum']:
+
+            if not docmod_no in fd['tmtnum']:
                 print('*** WARNING: TMT Document Numbers do not match')
                 print('\tDCC Document Number (with revision): ', fd['tmtnum'])
-                print('\tDocMod Document Number (without revision): ', docmatch[dcc_doc]['dccDocNo'])            
-            if not docmatch[dcc_doc]['dccDocRev'] in fd['tmtnum']:
+                print('\tDocMod Document Number (without revision): ', docmod_no) 
+          
+            if not docmod_rev in fd['tmtnum']:
                 print('*** WARNING: TMT Document Revisions do not match')
                 print('\tDCC Document Number: ', fd['tmtnum'])
-                print('\tDocMod Revision Number: ', docmatch[dcc_doc]['dccDocRev'])     
+                print('\tDocMod Revision Number: ', docmod_rev)     
+                
+            docmod_docnum = docmod_no + '.' + docmod_rev
+            if docmod_cadno:
+                docmod_docnum = docmod_docnum + '  [PDM CAD #:' + docmod_cadno + ']'
+            if not docmod_docnum in fd['tmtnum']:
+                question = 'Update TMT Document Number to: ' + docmod_docnum + ' (Y/N)? '
+                if flag_update and MyUtil.get_yn(question):
+                    DCC.set_metadata(s,fd['handle'], Summary = docmod_docnum)            
+            
         else:   
             DCC.print_doc_basic(fd)
             print('\n\t DCC View URL: ',Tree.url_view(fd['handle']),'\n')
