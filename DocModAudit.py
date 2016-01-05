@@ -140,7 +140,7 @@ for dcc_doc in pub_list:
             docmod_ver = DCC.get_handle(docmod_ver)
             
             # if ICD then combing docmod title and short title
-            if '.ICD.' in docmod_no and not 'Drawing' in docmod_type:
+            if ('.ICD.' in docmod_no or '.DRD.' in docmod_no) and not 'Drawing' in docmod_type:
                 docmod_title = docmod_short.strip() + ' ---- ' + docmod_title.strip()
             
             if not fd['title'] == docmod_title:
