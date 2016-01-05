@@ -4,6 +4,7 @@
 import DocMod
 import os
 import json
+import platform
 
 # my modules
 import DCC
@@ -20,7 +21,10 @@ import MyUtil
 # In setting search criteria it is possible to look for undefined
 # attributes by using '_UNASSIGNED' as the matching criteria.
 
-            
+verify_flag = True
+if platform.system() == 'Windows':
+    verify_flag = False
+
 found_flag = False
 if os.path.isfile(CF.tracetreefilepath + CF.docmod_dict_file):
     print('Found existing DocMod file: ', CF.docmod_dict_file)
@@ -131,7 +135,9 @@ for dcc_doc in pub_list:
             docmod_no = docmatch[dcc_doc].get('dccDocNo', 'No Attribute Value Assigned')
             docmod_rev = docmatch[dcc_doc].get('dccDocRev', 'No Attribute Value Assigned') 
             docmod_cadno = docmatch[dcc_doc].get('CADDocumentNo', '')
-            docmod_ver = DCC.get_handle(docmatch[dcc_doc]['dccDocVersionHyperlink'])
+            docmod_published = docmatch[dcc_doc].get('TMTPublished', '')
+            docmod_ver = docmatch[dcc_doc].get('dccDocVersionHyperlink', '')
+            docmod_ver = DCC.get_handle(docmod_ver)
             
             # if ICD then combing docmod title and short title
             if '.ICD.' in docmod_no and not 'Drawing' in docmod_type:
