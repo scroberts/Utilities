@@ -136,11 +136,10 @@ for dcc_doc in pub_list:
             docmod_rev = docmatch[dcc_doc].get('dccDocRev', 'No Attribute Value Assigned') 
             docmod_cadno = docmatch[dcc_doc].get('CADDocumentNo', '')
             docmod_published = docmatch[dcc_doc].get('TMTPublished', '')
-            docmod_ver = docmatch[dcc_doc].get('dccDocVersionHyperlink', '')
-            docmod_ver = DCC.get_handle(docmod_ver)
+            docmod_ver = DCC.get_handle(docmatch[dcc_doc].get('dccDocVersionHyperlink', ''))
             
             # if ICD then combing docmod title and short title
-            if ('.ICD.' in docmod_no or '.DRD.' in docmod_no) and not 'Drawing' in docmod_type:
+            if ('.ICD.' in docmod_no and not 'Drawing' in docmod_type) or ('DRD' in docmod_short):
                 docmod_title = docmod_short.strip() + ' ---- ' + docmod_title.strip()
             
             if not fd['title'] == docmod_title:
@@ -173,11 +172,10 @@ for dcc_doc in pub_list:
                 if flag_update and MyUtil.get_yn(question):
                     DCC.set_metadata(s,fd['handle'], Summary = docmod_docnum)            
             
-        else:   
+        else: # there's no dcc_doc in the document module
             DCC.print_doc_basic(fd)
-            print('\n\t DCC View URL: ',Tree.url_view(fd['handle']),'\n')
+            print('\n\t DCC View URL: ',Tree.url_view(fd['handle']),'\n')    
+            print('*** WARNING: [', dcc_doc, '] is NOT recorded as published in Document Module')
             
-            if not 'TMTPublished' in fd['keywords']:
-                print('*** WARNING: [', dcc_doc, '] is NOT recorded as published in Document Module')
             if not 'TMTPublished' in fd['keywords']:
                 print('*** WARNING: Document is in DCC Configuration Control (Published) Collection, but TMTPublished keyword is not set')
