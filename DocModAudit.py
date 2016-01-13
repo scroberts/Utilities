@@ -55,6 +55,7 @@ docmodreport.append('dccDocTitle')
 docmodreport.append('dccShortTitle')
 docmodreport.append('dccDocNo')
 docmodreport.append('dccDocRev')
+docmodreport.append('DocumentRev')
 docmodreport.append('DocType')
 docmodreport.append('CADDocumentNo')
 docmodreport.append('dccDocHandleHyperlink')
@@ -135,6 +136,7 @@ for dcc_doc in pub_list:
             docmod_no = docmatch[dcc_doc].get('dccDocNo', 'No Attribute Value Assigned')
             docmod_rev = docmatch[dcc_doc].get('dccDocRev', 'No Attribute Value Assigned') 
             docmod_cadno = docmatch[dcc_doc].get('CADDocumentNo', '')
+            docmod_cadrev = docmatch[dcc_doc].get('DocumentRev', '')
             docmod_published = docmatch[dcc_doc].get('TMTPublished', '')
             docmod_ver = DCC.get_handle(docmatch[dcc_doc].get('dccDocVersionHyperlink', ''))
             
@@ -166,7 +168,7 @@ for dcc_doc in pub_list:
                 
             docmod_docnum = docmod_no + '.' + docmod_rev
             if docmod_cadno:
-                docmod_docnum = docmod_docnum + '  [PDM CAD #:' + docmod_cadno + ']'
+                docmod_docnum = docmod_docnum + '  [PDM CAD #:' + docmod_cadno + ' Rev ' + docmod_cadrev + ']'
             if not docmod_docnum in fd['tmtnum']:
                 question = 'Update TMT Document Number to: ' + docmod_docnum + ' (Y/N)? '
                 if flag_update and MyUtil.get_yn(question):
