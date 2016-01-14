@@ -91,7 +91,7 @@ def reviewColls():
     tes = ['test', 'tes', 't']
     checker = False
     print("Would you like to log into the production site or the test site?")
-    print("Valid Inputs are as follows: Production, prod, p, test, t :")
+    print("Valid Inputs are as follows: Production, prod, p, test, t :", end="")
     choice = input().lower()
     #while loop to continue asking the user for input until a correct input has been entered
     while (checker == False):
