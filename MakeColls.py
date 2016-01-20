@@ -92,6 +92,8 @@ def reviewColls():
     checker = False
     print("Would you like to log into the production site or the test site?")
     print("Valid Inputs are as follows: Production, prod, p, test, t :", end="")
+    print("*** Input is not case sensitive ***")
+    print(" ")
     choice = input().lower()
     #while loop to continue asking the user for input until a correct input has been entered
     while (checker == False):
@@ -109,6 +111,8 @@ def reviewColls():
         #error message alerting user to enter a valid choice
         else:
             print("Please enter a valid choice, (P)roduction or (T)est")
+            print("*** Input is not case sensitive ***")
+            print(" ")
             choice = input().lower()
     yes = ['yes', 'y', 'ye']
     #creates a new boolean variable to allow user to break from loop
@@ -120,10 +124,14 @@ def reviewColls():
         parent = 'Collection-' + col
         fd = DCC.prop_get(s, parent , InfoSet = 'CollData', Print = True)
         print("Please enter the name of this new collection:")
+        print("*** Specific input is case sensitive ***")
+        print(" ")
         name = input()
         # double checks user to make sure that they would like to create this collection
         print("Are you sure that you want to create: " + name + " under " + parent)
         print("Valid Inputs are as follows: Yes, Y, No, N")
+        print("*** Input is not case sensitive ***")
+        print(" ")
         ans = input().lower()
         # checks that user input is correct, if the answer is a valid form of yes
         # then the collection will be made and the user will break from the loop
