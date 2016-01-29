@@ -8,6 +8,8 @@
 import Config as cf
 import DCC
 
+
+
 data_package = [['DP01.1 (__NAME). Level 2 Requirements',[]],
     ['DP01.2 (__NAME). Level 3 Requirements',[]],
     ['DP01.3 (__NAME). Specifications',[]],
@@ -85,6 +87,7 @@ def createReviewColls(s,handleParent, collNames, revName):
 
 def reviewColls():
     
+    #variable set to determine what will be created when making collections for reviews
     set = top_level
     #creates sets that define the user choice to cover miscellaneous cases
     prod = ['prod', 'production', 'p', ' ']
@@ -120,8 +123,11 @@ def reviewColls():
     print("Please enter a collection number that you would like to create a sub-collection under")
     #checker1 only true when user enters correct information 
     while(checker1 == False):
+        #takes user input and stores into variable col which is the collection number that will
+        #be used when creating the review collection
         col = input()
         parent = 'Collection-' + col
+        #uses function prop_get to display collection information
         fd = DCC.prop_get(s, parent , InfoSet = 'CollData', Print = True)
         print("Please enter the name of this new collection:")
         print("*** Specific input is case sensitive ***")
