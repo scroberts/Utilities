@@ -118,18 +118,7 @@ for dcc_doc in pub_list:
         fd['versions'] = DCC.prop_get(s, dcc_doc, InfoSet = 'Versions')
         print('\n############## ', dcc_doc, '##############')
         if dcc_doc in docmodlist:
-            DocMod.print_report(docmodreport, docmatch[dcc_doc])
-            print('\n')
-            DCC.print_doc_basic(fd)
-            print('\n\t DCC View URL: ',Tree.url_view(fd['handle']),'\n')
-
-            print('*** [', dcc_doc, '] is recorded as published in Document Module')
-            if not 'TMTPublished' in fd['keywords']:
-                print('*** WARNING: Document in Published Collection, but TMTPublished keyword is not set')
-#                 print('Checking flag_update = ',flag_update)
-                if flag_update and MyUtil.get_yn('Change DCC Keyword to add TMTPublished (Y/N)? '):
-                    DCC.set_metadata(s,fd['handle'],Keywords = fd['keywords'] + ' TMTPublished')
-                                    
+        
             docmod_title = docmatch[dcc_doc].get('dccDocTitle', 'No Attribute Value Assigned')
             docmod_type = docmatch[dcc_doc].get('DocType', 'No Attribute Value Assigned')
             docmod_short = docmatch[dcc_doc].get('dccShortTitle', 'No Attribute Value Assigned')
@@ -138,7 +127,22 @@ for dcc_doc in pub_list:
             docmod_cadno = docmatch[dcc_doc].get('CADDocumentNo', '')
             docmod_cadrev = docmatch[dcc_doc].get('DocumentRev', '')
             docmod_published = docmatch[dcc_doc].get('TMTPublished', '')
-            docmod_ver = DCC.get_handle(docmatch[dcc_doc].get('dccDocVersionHyperlink', ''))
+            docmod_ver = DCC.get_handle(docmatch[dcc_doc].get('dccDocVersionHyperlink', ''))        
+
+            DocMod.print_report(docmodreport, docmatch[dcc_doc])
+            print('\n')
+            DCC.print_doc_basic(fd)
+            print('\n\t DCC View URL: ',Tree.url_view(fd['handle']),'\n')
+
+            print('*** [', dcc_doc, '] is recorded as LATEST in Document Module')
+            if not docmod_published == 'True':
+                print('*** WARNING: Document Module records document as LATEST but DocMod TMTPublished is not set to True')
+            if not 'TMTPublished' in fd['keywords']:
+                print('*** WARNING: Document in Published Collection, but DCC TMTPublished keyword is not set')
+#                 print('Checking flag_update = ',flag_update)
+                if flag_update and MyUtil.get_yn('Change DCC Keyword to add TMTPublished (Y/N)? '):
+                    DCC.set_metadata(s,fd['handle'],Keywords = fd['keywords'] + ' TMTPublished')
+                                
             
             # if ICD then combing docmod title and short title
             if ('.ICD.' in docmod_no and not 'Drawing' in docmod_type) or ('DRD' in docmod_short):
@@ -178,7 +182,7 @@ for dcc_doc in pub_list:
         else: # there's no dcc_doc in the document module
             DCC.print_doc_basic(fd)
             print('\n\t DCC View URL: ',Tree.url_view(fd['handle']),'\n')    
-            print('*** WARNING: [', dcc_doc, '] is NOT recorded as published in Document Module')
+            print('*** WARNING: [', dcc_doc, '] is NOT recorded in the Document Module (either no record or no LATEST version identified)')
             
             if not 'TMTPublished' in fd['keywords']:
                 print('*** WARNING: Document is in DCC Configuration Control (Published) Collection, but TMTPublished keyword is not set')
