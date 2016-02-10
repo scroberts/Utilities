@@ -21,10 +21,6 @@ import MyUtil
 # In setting search criteria it is possible to look for undefined
 # attributes by using '_UNASSIGNED' as the matching criteria.
 
-verify_flag = True
-if platform.system() == 'Windows':
-    verify_flag = False
-
 found_flag = False
 if os.path.isfile(CF.tracetreefilepath + CF.docmod_dict_file):
     print('Found existing DocMod file: ', CF.docmod_dict_file)
