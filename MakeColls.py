@@ -4,9 +4,14 @@
 # DocuShare website.  This will allow the user a quicker method in which they can create collections.
 # This script also allows the user to create a collection with a unique number as well name the collection appropriately.
 
+
+
+
 # my modules
+# import testIDLE
 import Config as cf
 import DCC
+
 
 
 
@@ -77,13 +82,13 @@ test_set = [['__NAMEtest coll 1',[]],
         ['__NAMEtest coll 2',sub_test_set]
         ]
 
-def createReviewColls(s,handleParent, collNames, revName): 
+def createReviewColls(s,handleParent, collNames, revName, userName): 
     for collName,subColl in collNames:
         collName = collName.replace('__NAME',revName)
         print('Creating:',handleParent,'->',collName)
-        handleChild = DCC.make_collection(s, handleParent, collName, '')
+        handleChild = DCC.make_collection(s, handleParent, collName, '', Usrdata = userName)
         if len(subColl) > 0:
-            createReviewColls(s, handleChild, subColl, revName)
+            createReviewColls(s, handleChild, subColl, revName, userName)
 
 def reviewColls():
     
@@ -144,11 +149,12 @@ def reviewColls():
         if(ans in yes):
             print("You are now making a collection named: " + name + " under " + parent )
             checker1 = True
-            createReviewColls(s, parent, set, name)
+            createReviewColls(s, parent, set, name, fd['owner-userid'])
         else:
             print("Please re-enter a Collection number followed by a Collection name")
-            
-    
+
+
+
 if __name__ == '__main__':
     print("Running module test code for",__file__)
     reviewColls()
