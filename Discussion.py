@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 import DISC
 
 # Prototype for writing discussion group spreadsheets.
