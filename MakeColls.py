@@ -8,7 +8,6 @@
 
 
 # my modules
-# import testIDLE
 import Config as cf
 import DCC
 
@@ -81,7 +80,8 @@ sub_test_set = [['__NAMEtest coll 3',[]]]
 test_set = [['__NAMEtest coll 1',[]],
         ['__NAMEtest coll 2',sub_test_set]
         ]
-
+# This function creates review collections using a top-level collection number, a name for the new collection to be made, 
+# as well as user ID to create collections. the User will be set to the owner of the top level collection selected.
 def createReviewColls(s,handleParent, collNames, revName, userName): 
     for collName,subColl in collNames:
         collName = collName.replace('__NAME',revName)
