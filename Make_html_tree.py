@@ -17,6 +17,8 @@ s = DCC.login(Site = 'Production')
 # Prerequisites:
 	# Specified collection number to create a html report on
 
+
+
 # Expected output: 
 	# As the program runs a list of all Documents and Collections located in specified collection
 	# will be displayed on the screen, once complete the user will automatically be logged-out
