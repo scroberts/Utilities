@@ -8,9 +8,9 @@ import DCC
 # from from a set of collections containing CID files
 
 
-froot = 'Test of CID keyword'
-coll = 'Collection-8277'
-keyword_filter = 'CID'    # if no keyword set keyword_filter = '' 
+froot = 'NFIRAOS CID'
+coll = 'Collection-10609'
+keyword_filter = ''    # if no keyword set keyword_filter = '' 
 
 # Login to DCC
 s = DCC.login(Site = 'Production') 
