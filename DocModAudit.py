@@ -167,8 +167,10 @@ for dcc_doc in pub_list:
                 print('\tDocMod Revision Number: ', docmod_rev)     
                 
             docmod_docnum = docmod_no + '.' + docmod_rev
+            
             if docmod_cadno:
                 docmod_docnum = docmod_docnum + '  [PDM CAD #:' + docmod_cadno + ' Rev ' + docmod_cadrev + ']'
+                
             if not docmod_docnum in fd['tmtnum']:
                 print('*** WARNING: Docushare document number does NOT match:', docmod_docnum)
                 question = 'Update TMT Document Number to: ' + docmod_docnum + ' (Y/N)? '
