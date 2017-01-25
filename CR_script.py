@@ -72,7 +72,7 @@ while True:
         for l in list:
             for p in fd['parents']:
                 if p[0] == l['chandle']:
-                    if cr_coll != l['chandle']: # don't move if it's already in the desired collection
+                    if cr_coll == l['chandle']: # don't move if it's already in the desired collection
                         DCC.dcc_move(s, cr_coll, l['chandle'], dest)
         # Set keywords
         DCC.set_metadata(s, cr_coll, Keywords = crnum + ': ' + list[ansnum]['keyword'])        
