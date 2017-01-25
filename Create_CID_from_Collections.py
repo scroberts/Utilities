@@ -7,9 +7,9 @@ import DCC
 # specified collection.  The main use of the code is to create CID lists in html and spreadsheet
 # from from a set of collections containing CID files
 
-
-froot = 'NFIRAOS CID'
-coll = 'Collection-10609'
+froot = 'Listing of STR CID'
+coll = 'Collection-10669'
+#froot = 'STR CID'
 keyword_filter = ''    # if no keyword set keyword_filter = '' 
 
 # Login to DCC

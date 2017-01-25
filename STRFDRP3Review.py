@@ -24,8 +24,8 @@ import FileSys
 # Login to DCC
 s = DCC.login(CF.dcc_url + CF.dcc_login)
 
-coll = 'Collection-13987'
-dir = '/Users/sroberts/Dropbox/TMT/Current Tasks/TCS Honeywell/'
+coll = 'Collection-13735'
+dir = '/Users/sroberts/Dropbox/TMT/Current Tasks/STR FDR P3 Review/'
 exclude = []
 
-FileSys.create_DCC_mirror(s, coll, dir, SaveFiles = True, MaxFileSize = 20000000, Exclude = exclude)
+FileSys.create_DCC_mirror(s, coll, dir, SaveFiles = True, MaxFileSize = 25000000, Exclude = exclude)

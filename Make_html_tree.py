@@ -5,6 +5,9 @@
 # my modules
 import Tree
 import DCC
+import time
+
+tic = time.time()
 
 
 # Login to DCC
@@ -31,9 +34,14 @@ s = DCC.login(Site = 'Production')
 # froot = 'C. Enclosure Preliminary Design Phase'
 # coll = 'Collection-2219'
 
-coll = 'Collection-10598'
-froot = coll
+coll = 'Collection-13735'
 
+# coll = 'Collection-10259'
+froot = coll
 
 tr = Tree.return_tree(s, coll, froot)
 Tree.html_tree(s,tr,froot)
+
+toc = time.time()
+delta_t = toc - tic
+print('Elapsed time is: ', delta_t)

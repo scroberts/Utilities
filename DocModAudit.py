@@ -140,7 +140,7 @@ for dcc_doc in pub_list:
                     DCC.set_metadata(s,fd['handle'],Keywords = fd['keywords'] + ' TMTPublished')
                                 
             
-            # if ICD then combing docmod title and short title
+            # if ICD then combine docmod title and short title
             if ('.ICD.' in docmod_no and not 'Drawing' in docmod_type) or ('DRD' in docmod_short):
                 docmod_title = docmod_short.strip() + ' ---- ' + docmod_title.strip()
             
